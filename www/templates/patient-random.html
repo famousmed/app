@@ -1,0 +1,43 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="添加受试者">
+  <ion-content class="padding">
+
+      <div class="list list-inset">
+          <div class="item item-divider">
+              受试者信息
+          </div>
+          <label class="item item-input">
+              <input type="text" placeholder="受试者姓名" required ng-model="newPatient.patientName">
+          </label>
+
+          <label class="item item-radio">
+              <input type="radio" value="Man" name="sexId" required ng-model="newPatient.sexId">
+              <div class="item-content">
+                  男
+              </div>
+              <i class="radio-icon ion-checkmark"></i>
+          </label>
+          <label class="item item-radio">
+              <input type="radio" value="Woman" name="sexId" required ng-model="newPatient.sexId">
+              <div class="item-content">
+                  女
+              </div>
+              <i class="radio-icon ion-checkmark"></i>
+          </label>
+      </div>
+
+      <ul class="list">
+          <label class="item item-input">
+              <input type="text" placeholder="出生日期 格式如:20150921" required ng-model="newPatient.patientBirthday">
+          </label>
+      </ul>
+      <button class="button button-balanced button-full " ng-controller="PatientCtrl"  ng-click="assignPatient();">
+        保&#12288;存
+      </button>
+  </ion-content>
+</ion-view>

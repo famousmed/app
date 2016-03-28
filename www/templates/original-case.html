@@ -1,0 +1,46 @@
+<ion-view view-title="原始病例（共{{projData.patient.photos.length}}张）" cache-view="false" class="pane" nav-view="active" style="opacity: 1; transform: translate3d(0%, 0px, 0px);">
+    <ion-content>
+        <ion-refresher on-refresh="refreshPhoto()"
+                       pulling-text="Pull to refresh..."
+                       refreshing-text="Refreshing!"
+                       spinner="lines">
+        </ion-refresher>
+        <!--
+    <div class="gallery-view" ion-gallery-items="items">
+        <div class="row row-wrap" >
+            <div ng-repeat="photo in projData.patient.photos" class="col col-33 ">
+                <img  class='img-responsive' ng-src="{{photo.thumbUrl}}" ng-click="openModal($index);"  height="96px">
+            </div>
+        </div>
+    </div>
+    -->
+    <div class="list">
+        <a class="item item-thumbnail-left" ng-click="editPhotoSheet(photo.imageFlow);" ng-repeat="photo in projData.patient.photos">
+            <img  ng-src="{{photo.thumbUrl}}" ng-click="openModal($index);" >
+            <h2>{{photo.time}}</h2>
+            <p>{{photo.note}}</p>
+        </a>
+    </div>
+    <script id="view-case.html" type="text/ng-template">
+        <ion-modal-view  stype="background-color: #000;" >
+            <ion-header-bar >
+                <button style="font-weight: 900;
+                border: 2px solid;
+                position: absolute;
+                right: 5px;
+                border-radius: 5px;" class="button button-outline button-light close-btn" ng-click="closeModal()">关闭</button>
+            </ion-header-bar>
+            <ion-content>
+                <ion-slide-box class="slidebox" active-slide="0" on-slide-changed="slideHasChanged($index)"  delegate-handle="slideimgs" does-continue="true" >
+                    <ion-slide ng-repeat="photo in projData.patient.photos">
+                        <div class="item item-image centerPictureVertical gallery-slide-view">
+                            <img ng-src="{{photo.imageUrl}}">
+                        </div>
+                            <!-- ngIf: single.sub.length > 0 -->
+                      </ion-slide>
+                </ion-slide-box>
+            </ion-content>
+        </ion-modal-view>
+    </script>
+    </ion-content>
+</ion-view>

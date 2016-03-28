@@ -1,0 +1,43 @@
+<ion-view view-title="{{sysTitle}}" >
+    <img class="full-image" src="img/logo.png" style="padding-top: 40px;">
+    <ion-content class="padding" style="margin-top:110px;">
+        <div class="list card">
+
+            <div class="item " style="padding: 10px;font-size: 14px;">
+               欢迎您：{{user.userName}}&#12288;
+                {{user.date}}
+            </div>
+
+            <div class="row row-wrap" >
+                <div class="col col-25 " align="center" >
+                    <img src="img/F3.png" ng-controller="ProjCtrl" class='img-responsive'  ng-click="projList();" style="width:40px;height:40px;"/><br/>
+                    <span >项目列表</span>
+                </div>
+                <div class="col col-25 " align="center" >
+                    <img src="img/F7.png" class='img-responsive' ng-click="fllowRemaid();" style="width:40px;height:40px;"/><br/>
+                    <span >随访管理</span>
+                </div>
+
+                <div class="col col-25 " align="center" >
+                    <img src="img/F4.png" class='img-responsive' ng-click="dailyWork();" style="width:40px;height:40px;"/><br/>
+                    <span >日常工作</span>
+                </div>
+                <div class="col col-25 " align="center" >
+                    <img src="img/setting.png" ng-controller="AccountCtrl" class='img-responsive' ng-click="userCenter();" style="width:40px;height:40px;"/><br/>
+                    <span >个人中心</span>
+                </div>
+                <!--
+                <div class="col col-25" >
+                    <img src="img/setting.png" ng-controller="MainCtrl" class='img-responsive' ng-click="demo();" style="width: 50px;height: 60px;"/><br/>
+                    <span >拍照</span>
+                </div>
+                -->
+        </div>
+        <div class="item" style="padding: 10px;font-size: 14px;"> <img src="img/message.png" /> 通知：
+            <ul class="list">
+                <li class="item" style="font-size: 14px;">暂无通知</li>
+            </ul>
+        </div>
+    </div>
+  </ion-content>
+</ion-view>

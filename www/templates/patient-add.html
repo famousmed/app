@@ -1,0 +1,108 @@
+<!--
+  This template loads for the 'tab.friend-detail' state (app.js)
+  'friend' is a $scope variable created in the FriendsCtrl controller (controllers.js)
+  The FriendsCtrl pulls data from the Friends service (service.js)
+  The Friends service returns an array of friend data
+-->
+<ion-view view-title="添加受试者">
+  <ion-content class="padding">
+
+      <div class="list list-inset">
+          <div class="item item-divider">
+              基础信息
+          </div>
+          <label class="item item-input">
+              <input type="text" placeholder="受试者姓名" ng-model="newPatient.patientName">
+          </label>
+          <label class="item item-input">
+              <input type="text" placeholder="年龄" ng-model="newPatient.patientAge">
+          </label>
+          <label class="item item-input">
+              <input type="text" placeholder="联系方式" ng-model="newPatient.patientPhone">
+          </label>
+          <label class="item item-radio">
+              <input type="radio" value="Man" name="sexId" ng-model="newPatient.sexId">
+              <div class="item-content">
+                  男
+              </div>
+              <i class="radio-icon ion-checkmark"></i>
+          </label>
+          <label class="item item-radio">
+              <input type="radio" value="Woman" name="sexId" ng-model="newPatient.sexId">
+              <div class="item-content">
+                  女
+              </div>
+              <i class="radio-icon ion-checkmark"></i>
+          </label>
+      </div>
+      <!--
+      <div class="list">
+          <div class="item item-divider">
+              受试者来源
+          </div>
+          <label class="item item-radio">
+              <input type="radio" name="group">
+              <div class="item-content">
+                  门诊
+              </div>
+              <i class="radio-icon ion-checkmark"></i>
+          </label>
+          <label class="item item-radio">
+              <input type="radio" name="group">
+              <div class="item-content">
+                  住院
+              </div>
+              <i class="radio-icon ion-checkmark"></i>
+          </label>
+          <label class="item item-input">
+              <input type="text" placeholder="门诊/住院号" ng-model="userName">
+          </label>
+      </div>
+      <div class="item item-divider">
+       纳入排除标准
+      </div>
+      <ul class="list">
+          <li class="item item-toggle">
+              符合纳入标准
+              <label class="toggle ">
+                  <input type="checkbox">
+                  <div class="track">
+                      <div class="handle"></div>
+                  </div>
+              </label>
+          </li>
+          <li class="item item-toggle">
+              不符合排除标准
+              <label class="toggle ">
+                  <input type="checkbox">
+                  <div class="track">
+                      <div class="handle"></div>
+                  </div>
+              </label>
+          </li>
+      </ul>-->
+      <!-- <ul class="list">
+          <li class="item item-checkbox">
+              <label class="checkbox">
+                  <input type="checkbox">
+              </label>
+            感觉乏力
+          </li>
+          <li class="item item-checkbox">
+              <label class="checkbox">
+                  <input type="checkbox">
+              </label>
+              感觉头晕
+          </li>
+      </ul>
+-->
+      <ul class="list">
+          <label class="item item-input">
+              <input type="text" placeholder="入组日期 如:20150921" ng-model="newPatient.inDate">
+          </label>
+      </ul>
+      <button class="button button-balanced button-full " ng-controller="PatientCtrl"  ng-click="savePatient();">
+        保&#12288;存
+      </button>
+  </ion-content>
+</ion-view>

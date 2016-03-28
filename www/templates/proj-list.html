@@ -1,0 +1,32 @@
+<ion-view view-title="项目列表"  cache-view="false">
+    <ion-content class="padding" >
+        <div class="list list-inset">
+            <label class="item item-input">
+                <i class="icon ion-search placeholder-icon"></i>
+                <input type="text" ng-model="pjquery" placeholder="Search">
+            </label>
+        </div>
+    <div class="list card" ng-controller="PatientCtrl"  ng-repeat="proj in projs | filter:pjquery">
+      <div class="item item-divider">{{proj.projName}}</div>
+      <div class="item item-text-wrap">
+          <div >项目编号：{{proj.projNo}}</div>
+          <div style="margin-top:10px;">随机类型：{{proj.randomTypeName}}</div>
+          <div style="margin-top:10px;">盲法类型：{{proj.blindTypeName}}</div>
+          <div style="margin-top:10px;">访视次数：{{proj.visitNum}}</div>
+      </div>
+            <div class="item item-divider">
+               机构入组概况（{{proj.totalInSum}}/{{proj.totalPatientCount}}）
+            </div>
+            <a class="item item-icon-right"  ng-click="patient(proj.projFlow,org.orgFlow)"  ng-repeat="org in proj.orgList">
+                {{org.orgName}}  &#12288;
+                <span style=" float: right;font-size: 14px;">
+                       {{org.inCount}}
+                </span>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </a>
+        <div class="item item-divider" >
+            <i class="icon ion-ios-pricetag-outline"></i> {{proj.projDeclarer}}&#12288;{{proj.projSubTypeName}}
+        </div>
+    </div>
+  </ion-content>
+</ion-view>

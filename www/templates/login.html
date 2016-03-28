@@ -1,0 +1,18 @@
+<ion-view view-title="用户登录" hide-nav-bar="true" >
+    <ion-content class="padding" ng-controller="LoginCtrl">
+        <p align="center"><img class="full-image" src="img/logos.png"></p>
+        <div class="list list-inset">
+            <label class="item item-input">
+                <input type="text" placeholder="用户名"  ng-model="user.userCode">
+            </label>
+            <label class="item item-input">
+                <input type="password" placeholder="密码"  ng-model="user.userPassword">
+            </label>
+        </div>
+        <button  class="button button-calm  button-full " ng-click="login()" >
+            登录
+        </button>
+        <p align="center" style="color:#999999;margin-top:100px;line-height:180%;font-family:microsoft yahei">法默生™ V1.0 测试版<br/>
+© 南京迈拓医药科技有限公司<br/><strong>4000-5577-19</strong></p>
+    </ion-content>
+</ion-view>

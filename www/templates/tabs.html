@@ -1,0 +1,36 @@
+<!--
+Create tabs with an icon and label, using the tabs-positive style.
+Each tab's child <ion-nav-view> directive will have its own
+navigation history that also transitions its views in and out.
+-->
+<ion-nav-bar class="bar-calm">
+    <ion-nav-back-button></ion-nav-back-button>
+    <ion-nav-buttons side="left" >
+        <!--
+        <button  class="button icon-left ion-ios-people-outline button-calm" ng-click="takePhoto()">拍照</button>
+        -->
+    </ion-nav-buttons>
+    <ion-nav-buttons side="right" >
+        <button ng-if="(projData.uri!='/tab/input' && projData.uri!='/tab/serialInput' && projData.uri!='/tab/case')" class="button icon-left ion-ios-people-outline button-calm" ng-click="patient(projData.projFlow,projData.orgFlow)">受试者</button>
+        <button ng-if="(projData.uri=='/tab/input' && projData.showInputSaveBtnFlag)" class="button icon-left ion-ios-download-outline button-calm" ng-click="saveInputData()">保存</button>
+        <button ng-if="(projData.uri=='/tab/serialInput' && projData.showInputSaveBtnFlag)" class="button icon-left ion-ios-download-outline button-calm" ng-click="saveSerialInputData()">保存</button>
+        <button ng-if="((projData.uri=='/tab/serialInput'|| projData.uri=='/tab/input')  && !projData.showInputSaveBtnFlag)" class="button icon-left ion-ios-locked-outline button-calm" >已提交</button>
+        <button ng-if="((projData.uri=='/tab/case'))" ng-click="addPatientCase(true)" class="button button-clear ion-plus button-positive"></button>
+    </ion-nav-buttons>
+</ion-nav-bar>
+<ion-tabs class="tabs-icon-top tabs-color-active-positive">
+
+   <!--//ng-click="visitlist(projData.patient.patientFlow)"-->
+    <ion-tab title="访视列表" icon-off="ion-ios-paper-outline" icon-on="ion-ios-paper" ng-click="visitlist(projData.patient.patientFlow)">
+        <ion-nav-view name="tab-visit"></ion-nav-view>
+    </ion-tab>
+  <ion-tab title="数据采集" icon-off="ion-ios-compose-outline" icon-on="ion-ios-compose" ng-click="moduleList(projData.visit.visitFlow)">
+    <ion-nav-view name="tab-module"></ion-nav-view>
+  </ion-tab>
+    <ion-tab title="数据核查" icon-off="ion-ios-information-outline" icon-on="ion-ios-information" ng-click="sdv()">
+        <ion-nav-view name="tab-sdv"></ion-nav-view>
+    </ion-tab>
+    <ion-tab title="原始病例" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" ng-click="originalCase();">
+        <ion-nav-view name="tab-sdv"></ion-nav-view>
+    </ion-tab>
+</ion-tabs>

@@ -1,0 +1,20 @@
+<ion-view view-title="序号：{{projData.sdv.serial.serialNum}}">
+  <ion-content class="padding">
+
+
+      <div class="list">
+          <a class="item item-icon-left assertive" href="javascript:void(0);">
+              <i class="icon ion-ios-paper"></i>
+              {{projData.sdv.serial.elementName}}
+          </a>
+          <ion-list>
+              <ion-item  class="item-remove-animate  item-icon-right" ng-repeat="attribute in projData.sdv.serial.attributes" >
+                  {{attribute.attrName}}：{{attribute.inputValue}}
+                  <ion-option-button class="button-assertive" ng-click="sendQuery(attribute.recordFlow,projData.sdv.serial.recordFlow, projData.sdv.serial.moduleCode,projData.sdv.serial.elementCode,attribute.attrCode,projData.sdv.serial.serialNum)">
+                      SDV
+                  </ion-option-button>
+              </ion-item>
+          </ion-list>
+      </div>
+  </ion-content>
+</ion-view>

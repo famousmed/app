@@ -1,0 +1,27 @@
+<ion-view view-title="疑问清单" cache-view="false">
+  <ion-content>
+      <div class="list card" ng-repeat="query in projData.patient.querys" >
+
+          <div class="item item-avatar">
+              <img src="img/query2.png" ng-if="query.solveStatusId=='UnSolve'">
+              <img src="img/query3.png" ng-if="query.solveStatusId=='Solved'">
+              <h2>{{query.queryTypeName}}</h2>
+              <p>{{query.sendWayName}}&#12288;{{query.sendTime}}</p>
+          </div>
+
+          <div class="item "  ng-repeat=" data in query.data">
+              <div class="item-text-wrap">
+                  <div>{{data.moduleName}}.{{data.elementName}}.{{data.attrName}}</div>
+                  <div>疑问值:{{data.attrValue}}&#12288;&#12288; 更新值: {{data.attrEventValue}}</div>
+              </div>
+          </div>
+          <a class="item  " href="#" ng-if="query.solveStatusId=='Solved'">
+              {{query.solveStatusName}} &#12288;{{query.solveTime}}&#12288;{{query.solveUserName}}
+          </a>
+          <a class="item  assertive" href="javascript:void(0);" ng-if="query.solveStatusId=='UnSolve'">
+              {{query.solveStatusName}} &#12288;疑问人:{{query.sendUserName}}
+          </a>
+
+      </div>
+  </ion-content>
+</ion-view>

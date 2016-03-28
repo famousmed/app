@@ -1,0 +1,54 @@
+<ion-view view-title="{{projData.patient.patientName}}">
+  <ion-content>
+
+      <div class="list card">
+          <div class="item item-avatar" >
+              <img src="img/3.png">
+              <h2>{{!projData.sdv.sdvOperStatusName?"未审核":projData.sdv.sdvOperStatusName}}&#12288;{{projData.visit.visitName}}</h2>
+              <p style="color: red">{{projData.sdv.sdvOperName}} {{projData.sdv.sdvOperTime}}</p>
+         </div>
+          <div class="item">
+              <div ng-repeat="module in projData.sdv.modules">
+                  <a class="item item-icon-left assertive" href="javascript:void(0);">
+                      <i class="icon ion-ios-paper"></i>
+                      {{module.moduleName}}
+                  </a>
+                  <div   ng-repeat="element in module.elements">
+                      <div class="item item-divider">
+                          {{element.elementName}}
+                      </div>
+                      <ion-list  ng-if="element.elementSerial=='N'">
+                          <ion-item  class="item-remove-animate  item-icon-right" ng-repeat="attribute in  element.attributes" >
+                              {{attribute.attrName}}：{{attribute.inputValue}}
+                              <ion-option-button class="button-assertive" ng-click="sendQuery(attribute.recordFlow,projData.sdv.recordFlow, module.moduleCode,element.elementCode,attribute.attrCode,1)">
+                                  SDV
+                              </ion-option-button>
+                          </ion-item>
+                      </ion-list>
+                      <ion-list ng-if="element.elementSerial=='Y'">
+                          <ion-item  class="item-remove-animate  item-icon-right" ng-repeat="n in [].constructor(element.elementSerialNum) track by $index"  ng-click="serialSdv(module.moduleCode,element.elementCode,$index+1)" >
+                              <h2>多次录入序号：{{$index+1}}</h2>
+                              <i class="icon ion-chevron-right icon-accessory"></i>
+                          </ion-item>
+                      </ion-list>
+                  </div>
+              </div>
+          </div>
+          <div class="item tabs tabs-secondary tabs-icon-left">
+              <a class="tab-item"  ng-click="audit(projData.sdv.recordFlow);" href="javascript:void(0);">
+                  <i class="icon ion-thumbsup"></i>
+                  审核
+              </a>
+              <a class="tab-item" ng-click="querylist();" href="javascript:void(0);">
+                  <i class="icon ion-chatbox"></i>
+                  疑问
+              </a>
+              <a class="tab-item" ng-click="originalCase();" href="javascript:void(0);">
+                  <i class="icon ion-camera"></i>
+                  原始病历
+              </a>
+          </div>
+
+      </div>
+  </ion-content>
+</ion-view>

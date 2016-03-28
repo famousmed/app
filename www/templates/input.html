@@ -1,0 +1,61 @@
+<ion-view view-title="{{projData.module.moduleName}}" cache-view="false">
+  <ion-content class="padding">
+      <div ng-repeat="element in projData.inputs.elements">
+          <a class="item item-icon-left assertive" href="javascript:void(0);">
+              <i class="icon ion-ios-paper"></i>
+             {{element.elementName}}
+          </a>
+          <div class="list" ng-if="element.elementSerial=='N'">
+              <div ng-repeat="attribute in element.attributes">
+                  <label class="item item-input item-stacked-label" ng-if="!attribute.codes">
+                      <span  class="input-label" ng-if="attribute.isViewName=='Y'">{{attribute.attrName}}</span>
+                      <input type="text" ng-if="attribute.inputTypeId!='date'" name="{{attribute.attrCode}}" ng-model="projData.dataForm[attribute.attrCode]" placeholder="请填写..." >
+
+                      <input type="date" ng-if="attribute.inputTypeId=='date'" name="{{attribute.attrCode}}" format-date ng-model="projData.dataForm[attribute.attrCode]" placeholder="请填写..." >
+                      <!--
+                        <ionic-datepicker input-obj="datepickerObject">
+                          <input type="text" ng-if="attribute.inputTypeId=='date'" name="{{attribute.attrCode}}" value="{{datepickerObject.inputDate | date:'yyyy-MM-dd'}}" ng-model="projData.dataForm[attribute.attrCode]"  placeholder="请选择..." >
+                        </ionic-datepicker>
+                        -->
+                  </label>
+                  <label class="item item-input item-select"  ng-if="attribute.codes && cfg.selectTyle=='default'">
+                      <!--ng-if="attribute.isViewName=='Y'" -->
+                      <div class="input-label" >
+                          {{attribute.attrName}}
+                      </div>
+                      <select name="{{attribute.attrCode}}" ng-model="projData.dataForm[attribute.attrCode]" ng-options="t.codeValue as t.codeName for t in attribute.codes">
+                          <!-- <option value="{{code.codeValue}}"     ng-repeat="code in attribute.codes">{{code.codeName}}</option>-->
+                    </select>
+
+                  </label>
+                  <label class="item item-input item-stacked-label"  ng-if="attribute.codes && cfg.selectTyle=='select'">
+                      <!--ng-if="attribute.isViewName=='Y'" -->
+                      <div class="input-label" >
+                          {{attribute.attrName}}
+                      </div>
+                      <input type="text"  name="{{attribute.attrCode}}"  readonly ng-model="projData.dataForm[attribute.attrCode]" ng-click="chooseCode(attribute.attrCode,attribute.codes)" placeholder="请选择..." >
+                  </label>
+                  <!--
+                  <ion-item class="item-remove-animate  item-icon-right" >
+                      <h2>我是分割线</h2>
+                      <i class="icon ion-chevron-right icon-accessory"></i>
+                      <ion-option-button class="button-assertive" ng-click="remove(chat)">
+                          Delete
+                      </ion-option-button>
+                  </ion-item>
+                  -->
+              </div>
+          </div>
+          <ion-list ng-if="element.elementSerial=='Y'">
+              <ion-item class="item-remove-animate  item-icon-right" ng-repeat="n in [].constructor(element.elementSerialNum) track by $index"  ng-click="serialInput(projData.module.moduleCode,element.elementCode,$index+1)" >
+                  <h2>多次录入序号：{{$index+1}}</h2>
+                  <i class="icon ion-chevron-right icon-accessory"></i>
+              </ion-item>
+              <ion-item class="item-remove-animate  item-icon-right" ng-click="serialInput(projData.module.moduleCode,element.elementCode,element.elementSerialNum+1);">
+                  <h2>新增记录+</h2>
+                  <i class="icon ion-chevron-right icon-accessory"></i>
+              </ion-item>
+          </ion-list>
+      </div>
+  </ion-content>
+</ion-view>

@@ -1,0 +1,21 @@
+<ion-view view-title="{{projData.patient.patientName}}" cache-view="false">
+  <ion-content>
+
+      <div class="card">
+          <div class="item item-text-wrap" ng-if="projData.visit">
+              {{projData.visit.visitName}}
+          </div>
+          <div class="item item-text-wrap" ng-if="!projData.visit">
+             请选择访视!
+          </div>
+      </div>
+    <ion-list>
+      <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="module in projData.modules" type="item-text-wrap" ng-click="datainput(module.moduleCode);" >
+        <img src="img/F6.png">
+        <h2>{{module.moduleName}}</h2>
+        <p>{{module.moduleNote}}</p>
+        <i class="icon ion-chevron-right icon-accessory"></i>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+</ion-view>

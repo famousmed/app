@@ -1,0 +1,80 @@
+<ion-view view-title="{{projData.module.moduleName}}">
+  <ion-content class="padding">
+
+          <div class="list list-inset">
+              <label class="item item-input">
+                  <i class="icon ion-search placeholder-icon"></i>
+                  <input type="text" placeholder="Search">
+              </label>
+          </div>
+      <div class="list list-inset">
+          <label class="item item-input">
+              <input type="text" placeholder="文本输入..." ng-model="userName">
+          </label>
+      </div>
+      <ul class="list">
+          <li class="item item-toggle">
+              按时服药
+              <label class="toggle ">
+                  <input type="checkbox">
+                  <div class="track">
+                      <div class="handle"></div>
+                  </div>
+              </label>
+          </li>
+          <li class="item item-toggle">
+              有无不良事件
+              <label class="toggle toggle-assertive">
+                  <input type="checkbox">
+                  <div class="track">
+                      <div class="handle"></div>
+                  </div>
+              </label>
+          </li>
+      </ul>
+      <div class="list" >
+      <ul >
+          <li class="item item-checkbox">
+              <label class="checkbox">
+                  <input type="checkbox">
+              </label>
+            感觉乏力123
+          </li>
+          <li class="item item-checkbox">
+              <label class="checkbox">
+                  <input type="checkbox">
+              </label>
+              感觉头晕
+          </li>
+      </ul>
+      </div>
+      <div class="list">
+          <label class="item item-radio">
+              <input type="radio" name="group">
+              <div class="item-content">
+                  Radio1
+              </div>
+              <i class="radio-icon ion-checkmark"></i>
+          </label>
+          <label class="item item-radio">
+              <input type="radio" name="group">
+              <div class="item-content">
+                  Radio2
+              </div>
+              <i class="radio-icon ion-checkmark"></i>
+          </label>
+      </div>
+      <div class="item range">
+          <i class="icon ion-volume-low"></i>
+          <input type="range" name="volume">
+          <i class="icon ion-volume-high"></i>
+      </div>
+      <div class="list">
+          <div class="item range range-positive">
+              <i class="icon ion-ios-sunny-outline"></i>
+              <input type="range" name="volume" min="0" max="100" value="33">
+              <i class="icon ion-ios-sunny"></i>
+          </div>
+      </div>
+  </ion-content>
+</ion-view>
