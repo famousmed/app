@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
     var day=now.getDate()
     var currentime = year+"-"+month+"-"+day+" "+weekDayLabels[now.getDay()]
     $rootScope.user.date=currentime;
-    $rootScope.sysTitle = false ?"法迈生" : "法默生";
+    $rootScope.sysTitle = false ?"法迈生医学" : "法默生";
     console.log("user.date=="+currentime);
     //$rootScope.user.userCode= localStorage.userCode
     //$rootScope.user.userPassword = localStorage.userPasswd;
