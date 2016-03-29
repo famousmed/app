@@ -151,7 +151,7 @@ angular.module('starter.controllers', [])
         PatientService.patientlist(projFlow,orgFlow).success(function () {
             $state.go("projmenu.patient");
 
-            //记录滚动位置
+            //记录滚动位置，silde操作不记录
             var delegate = $ionicScrollDelegate.$getByHandle('projScroll');
             if(delegate.getScrollPosition()){
                 $rootScope.projListPosition =  delegate.getScrollPosition();
