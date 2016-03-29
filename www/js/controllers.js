@@ -78,8 +78,16 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('ProjCtrl', function($rootScope,$scope,$location,ProjService,$state, $ionicLoading) {
+.controller('ProjCtrl', function($rootScope,$scope,$location,ProjService,$state, $ionicLoading,$ionicScrollDelegate) {
     $scope.projs = ProjService.all();
+
+    $scope.$on('$ionicView.enter', function(e) {
+
+        var delegate = $ionicScrollDelegate.$getByHandle('projScroll');
+        delegate.scrollTo($rootScope.projListPosition.left, $rootScope.projListPosition.top);
+    });
+
+
     $scope.projList = function(){
         $ionicLoading.show({
             template: '加载中...'
@@ -92,6 +100,9 @@ angular.module('starter.controllers', [])
         });
 
     };
+
+
+
 })
     /*
 *  projData={
@@ -109,7 +120,7 @@ angular.module('starter.controllers', [])
 *
 * */
 
-.controller('PatientCtrl', function(WeiXinService,$timeout,$cordovaCamera,$ionicSlideBoxDelegate,$ionicModal,$ionicActionSheet,$scope, $rootScope,$state,$location,$ionicLoading,$ionicPopup,$stateParams,PatientService,ProjService) {
+.controller('PatientCtrl', function(WeiXinService,$ionicScrollDelegate,$timeout,$cordovaCamera,$ionicSlideBoxDelegate,$ionicModal,$ionicActionSheet,$scope, $rootScope,$state,$location,$ionicLoading,$ionicPopup,$stateParams,PatientService,ProjService) {
 
     $scope.projData = PatientService.all();
 
@@ -139,6 +150,13 @@ angular.module('starter.controllers', [])
         });
         PatientService.patientlist(projFlow,orgFlow).success(function () {
             $state.go("projmenu.patient");
+
+            //记录滚动位置
+            var delegate = $ionicScrollDelegate.$getByHandle('projScroll');
+            if(delegate.getScrollPosition()){
+                $rootScope.projListPosition =  delegate.getScrollPosition();
+            }
+
             $ionicLoading.hide();
         }).error(function () {
 
