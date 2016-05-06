@@ -518,10 +518,10 @@ angular.module('starter.services', [])
             }
             return promise;
         },
-        photos:  function(patientFlow) {
+        photos:  function(patientFlow,visitFlow) {
             var deferred = $q.defer();
             var promise = deferred.promise;
-            $http.jsonp($rootScope.SERVICE_URL+"/patientCase?patientFlow="+patientFlow+"&callback=JSON_CALLBACK")
+            $http.jsonp($rootScope.SERVICE_URL+"/patientCase?patientFlow="+patientFlow+"&visitFlow="+visitFlow+"&callback=JSON_CALLBACK")
                 .success(function (response) {
                     if(response.resultId==200){
                         projData.patient.photos = response.images;
@@ -584,11 +584,11 @@ angular.module('starter.services', [])
             }
             return null;
         },
-        savePhotoNote: function (patientFlow,imgFlow,note){
+        savePhotoNote: function (patientFlow,visitFlow,imgFlow,note){
             var deferred = $q.defer();
             var promise = deferred.promise;
             $http({method: 'post', url: $rootScope.SERVICE_URL+"/savePhotoNote",
-                data: {patientFlow:patientFlow,note:note,imgFlow:imgFlow}
+                data: {patientFlow:patientFlow,visitFlow:visitFlow,note:note,imgFlow:imgFlow}
             }) .success(function () {
                 deferred.resolve("success");
             }).error(deferred.reject);
@@ -603,10 +603,10 @@ angular.module('starter.services', [])
             }
             return promise;
         },
-        delPhoto:function (patientFlow,imageFlow){
+        delPhoto:function (patientFlow,visitFlow,imageFlow){
             var deferred = $q.defer();
             var promise = deferred.promise;
-            $http.jsonp($rootScope.SERVICE_URL+"/deletePhoto?patientFlow="+patientFlow+"&imageFlow="+imageFlow+"&callback=JSON_CALLBACK")
+            $http.jsonp($rootScope.SERVICE_URL+"/deletePhoto?visitFlow="+visitFlow+"&patientFlow="+patientFlow+"&imageFlow="+imageFlow+"&callback=JSON_CALLBACK")
                 .success(function (response) {
                     if(response.resultId==200){
                         deferred.resolve(projData.patient.photos);
@@ -654,10 +654,10 @@ angular.module('starter.services', [])
             }
             return promise;
         },
-        pullPhoto:function(patientFlow,serverId){
+        pullPhoto:function(patientFlow,visitFlow,serverId){
             var deferred = $q.defer();
             var promise = deferred.promise;
-            $http.jsonp($rootScope.SERVICE_URL+"/pullPhoto?callback=JSON_CALLBACK&serverId="+serverId+"&patientFlow="+patientFlow)
+            $http.jsonp($rootScope.SERVICE_URL+"/pullPhoto?callback=JSON_CALLBACK&serverId="+serverId+"&patientFlow="+patientFlow+"&visitFlow="+visitFlow)
                 .success(function (response) {
                     deferred.resolve("success");
                 })

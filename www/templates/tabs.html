@@ -30,7 +30,7 @@ navigation history that also transitions its views in and out.
     <ion-tab title="数据核查" icon-off="ion-ios-information-outline" icon-on="ion-ios-information" ng-click="sdv()">
         <ion-nav-view name="tab-sdv"></ion-nav-view>
     </ion-tab>
-    <ion-tab title="原始病例" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" ng-click="originalCase();">
-        <ion-nav-view name="tab-sdv"></ion-nav-view>
+    <ion-tab title="原始病例" icon-off="ion-ios-camera-outline" icon-on="ion-ios-camera" ng-click="originalCase(projData.visit.visitFlow);">
+        <ion-nav-view name="tab-case"></ion-nav-view>
     </ion-tab>
 </ion-tabs>

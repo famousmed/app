@@ -8,11 +8,35 @@
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','ngCordova','ionic-datepicker'])
 
  .run(function($ionicPlatform,$rootScope) {
-  $rootScope.SERVICE_URL =
-       //"http://120.55.165.176:9090/medroad/mobile";
-      "http://180.96.11.22:8080/sci/mobile"
-       //    "http://localhost:8080/pdsci/mobile";
+
+  $rootScope.configData = {
+        pharmasun:{
+            sysTitle:"法默生",
+            SERVICE_URL:"http://180.96.11.22:8080/sci/mobile",
+            appid:"wx152f0049d166931e",
+            signUrl:"http://www.pharmasun.net:8080/app/#/tab/case"
+        },
+        famousmed:{
+            sysTitle:"法迈生",
+            SERVICE_URL:"http://edc.medroad.cn/sci/mobile",
+            appid:"wx1315bff62e20057d",
+            signUrl:"http://app.medroad.cn:80/app/#/tab/case"
+        },
+       local:{
+           sysTitle:"本地测试",
+           SERVICE_URL: "http://localhost:8080/pdsci/mobile",
+           appid:"wx1315bff62e20057d",
+           signUrl:"http://localhost:63342/edc/www/index.html"
+       }
+  }
+  var compStr = "local";
+  $rootScope.SERVICE_URL = $rootScope.configData[compStr].SERVICE_URL;
+  $rootScope.appid = $rootScope.configData[compStr].appid;
+  $rootScope.signUrl =  $rootScope.configData[compStr].signUrl;
+  $rootScope.sysTitle =  $rootScope.configData[compStr].sysTitle;
+
   $rootScope.cfg = {selectTyle:'default'};
+  $rootScope.wxInitConfigFlag = false;
   $rootScope.user = {username: null, password: null, token: null};
   $ionicPlatform.ready(function() {
       //Ionic.io();
@@ -286,7 +310,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
             url: '/case',
             cache: false,
             views: {
-                'tab-sdv': {
+                'tab-case': {
                     templateUrl: 'templates/original-case.html',
                     controller: 'PatientCtrl'
                 }

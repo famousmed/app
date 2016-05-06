@@ -25,7 +25,7 @@ angular.module('starter.controllers', [])
     var day=now.getDate()
     var currentime = year+"-"+month+"-"+day+" "+weekDayLabels[now.getDay()]
     $rootScope.user.date=currentime;
-    $rootScope.sysTitle = false ?"法迈生" : "法默生";
+
     console.log("user.date=="+currentime);
     //$rootScope.user.userCode= localStorage.userCode
     //$rootScope.user.userPassword = localStorage.userPasswd;
@@ -133,6 +133,43 @@ angular.module('starter.controllers', [])
                 $scope.projData.showInputSaveBtnFlag = false;
             } else {
                 $scope.projData.showInputSaveBtnFlag = true;
+            }
+        }
+        if($location.url()=="/tab/case"){
+            console.log("url="+location.href.split('#')[0]);
+            if(!$rootScope.wxInitConfigFlag){
+                //$rootScope.signUrl
+                WeiXinService.getSign(location.href.split('#')[0]).success(function () {
+                    var sign =  $rootScope.signData;
+                    console.log("jsapi_ticket="+sign.jsapi_ticket);
+                    console.log("url="+sign.url);
+                    wx.config({
+                        debug: false,
+                        appId: $rootScope.appid,
+                        timestamp:  sign.timestamp,
+                        nonceStr: sign.noncestr,
+                        signature: sign.signature,
+                        jsApiList: [
+                            'checkJsApi',
+                            'chooseImage',
+                            'previewImage',
+                            'uploadImage',
+                            'downloadImage'
+                        ]
+                    });
+                }).error(function (resultName) {
+                    $ionicPopup.alert({
+                        title: '操作失败',
+                        template:  resultName
+                    });
+                    $ionicLoading.hide();
+                });
+                wx.ready(function(){
+                    $rootScope.wxInitConfigFlag = true;
+                });
+                wx.error(function(res){
+                   alert("微信脚本初始化失败!");
+                });
             }
         }
         //console.log("url=="+$location.url() + "===");
@@ -592,30 +629,8 @@ angular.module('starter.controllers', [])
         });
     };
 
-    var url = "http://www.pharmasun.net:8080/app/#/tab/case";
-    WeiXinService.getSign(url).success(function () {
-            var sign =  $rootScope.signData;
-            wx.config({
-                debug: false,
-                appId: 'wx152f0049d166931e',
-                timestamp:  sign.timestamp,
-                nonceStr: sign.noncestr,
-                signature: sign.signature,
-                jsApiList: [
-                    'checkJsApi',
-                    'chooseImage',
-                    'previewImage',
-                    'uploadImage',
-                    'downloadImage'
-                ]
-            });
-        }).error(function (resultName) {
-            $ionicPopup.alert({
-                title: '操作失败',
-                template:  resultName
-            });
-            $ionicLoading.hide();
-        });
+
+
         var images = {
             localId: [],
             serverId: []
@@ -629,14 +644,14 @@ angular.module('starter.controllers', [])
                     var serverId = res.serverId; // 返回图片的服务器端ID
                     //其他对serverId做处理的代码
                     //服务器获取
-                    WeiXinService.pullPhoto($scope.projData.patient.patientFlow,serverId);
+                    WeiXinService.pullPhoto($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow,serverId);
                     if(localIds.length > 0){
                         syncUpload(localIds);
                     }else {
                         $timeout(
                             function() {
                                 alert("上传成功");
-                                PatientService.photos($scope.projData.patient.patientFlow);
+                                PatientService.photos($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow);
                             },
                             1000
                         );
@@ -693,9 +708,9 @@ angular.module('starter.controllers', [])
                     $ionicLoading.show({
                         template: '上传中...'
                     });
-                    PatientService.uploadPatientCase($scope.projData.patient.patientFlow,imageData)
+                    PatientService.uploadPatientCase($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow,imageData)
                         .success(function () {
-                            PatientService.photos($scope.projData.patient.patientFlow);
+                            PatientService.photos($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow);
                             $ionicLoading.hide();
                         }).error(function (resultName) {
                             $ionicPopup.alert({
@@ -733,8 +748,8 @@ angular.module('starter.controllers', [])
                     $ionicLoading.show({
                         template: '上传中...'
                     });
-                    PatientService.uploadPatientCase($scope.projData.patient.patientFlow,imageData).success(function () {
-                       PatientService.photos($scope.projData.patient.patientFlow);
+                    PatientService.uploadPatientCase($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow,imageData).success(function () {
+                       PatientService.photos($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow);
                         $ionicLoading.hide();
                     }).error(function (resultName) {
                        $ionicPopup.alert({
@@ -751,16 +766,28 @@ angular.module('starter.controllers', [])
 
             }, false);
         };
-    $scope.originalCase = function() {
-        PatientService.photos($scope.projData.patient.patientFlow).success(function () {
-            $state.go("tab.case");
-        }).error(function (resultName) {
-            var alertPopup = $ionicPopup.alert({
-                title: '操作失败',
-                template:  resultName
+    $scope.originalCase = function(visitFlow) {
+
+        if(visitFlow) {
+            PatientService.photos($scope.projData.patient.patientFlow,visitFlow).success(function () {
+                $state.go("tab.case");
+            }).error(function (resultName) {
+                 $ionicPopup.alert({
+                    title: '操作失败',
+                    template:  resultName
+                });
+                $ionicLoading.hide();
             });
-            $ionicLoading.hide();
-        });
+        }else {
+            console.log("no visit choose!");
+            var alertPopup = $ionicPopup.alert({
+                title: '提示',
+                template:  "请先选择访视!"
+            });
+            alertPopup.then(function (res) {
+                $state.go("tab.proj-visit");
+            });
+        }
 
     };
     $scope.editPhotoSheet = function(imageFlow) {
@@ -793,14 +820,14 @@ angular.module('starter.controllers', [])
         });
         confirmPopup.then(function (res) {
             if (res) {
-                PatientService.delPhoto($scope.projData.patient.patientFlow,imageFlow)
+                PatientService.delPhoto($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow,imageFlow)
                     .success(function () {
                         var alertPopup = $ionicPopup.alert({
                             title: '提示信息',
                             template: '删除成功!'
                         });
                         alertPopup.then(function (res) {
-                            PatientService.photos($scope.projData.patient.patientFlow);
+                            PatientService.photos($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow);
                         });
                     }).error(function (resultName) {
                         $ionicPopup.alert({
@@ -839,7 +866,7 @@ angular.module('starter.controllers', [])
             console.log("note="+note);
             if(note){
                 PatientService.getPhoto(imageFlow).note = note;
-                PatientService.savePhotoNote($scope.projData.patient.patientFlow, imageFlow, note);
+                PatientService.savePhotoNote($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow, imageFlow, note);
             }else {
 
             }
@@ -895,7 +922,7 @@ angular.module('starter.controllers', [])
     $scope.refreshPhoto = function() {
         $timeout( function() {
             //simulate async response 待处理
-            PatientService.photos($scope.projData.patient.patientFlow);
+            PatientService.photos($scope.projData.patient.patientFlow,$scope.projData.visit.visitFlow);
             //Stop the ion-refresher from spinning
             $scope.$broadcast('scroll.refreshComplete');
 
