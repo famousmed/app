@@ -1,4 +1,4 @@
-<ion-view view-title="访视列表">
+<ion-view view-title="{{projData.patient.patientName}}">
   <ion-content>
     <ion-list>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="visit in projData.visits" type="item-text-wrap" ng-click="moduleList(visit.visitFlow)">

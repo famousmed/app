@@ -2,12 +2,12 @@
   <ion-content class="padding">
       <div class="list">
           <div ng-repeat="attribute in projData.inputs.serial.attributes">
-              <label class="item item-input item-stacked-label" ng-if="!attribute.codes">
-                  <span  class="input-label" ng-if="attribute.isViewName=='Y'">{{attribute.attrName}}</span>
+              <label class="item item-input item-stacked-label" ng-if="attribute.inputTypeId=='text' || attribute.inputTypeId=='date' ">
+                  <span  class="input-label" ng-if="attribute.isViewName=='Y'"> {{attribute.attrName}}</span>
                   <input type="text" ng-if="attribute.inputTypeId!='date'" name="{{attribute.attrCode}}" ng-model="projData.serialDataForm[attribute.attrCode]" placeholder="请填写..." >
                   <input type="date" ng-if="attribute.inputTypeId=='date'" name="{{attribute.attrCode}}" format-date ng-model="projData.serialDataForm[attribute.attrCode]" placeholder="请填写..." >
               </label>
-              <label class="item item-input item-select"  ng-if="attribute.codes">
+              <label class="item item-input item-select"  ng-if=" attribute.inputTypeId=='select' ">
                   <!--ng-if="attribute.isViewName=='Y'" -->
                   <div class="input-label" >
                       {{attribute.attrName}}
@@ -16,15 +16,22 @@
                       <!-- <option value="{{code.codeValue}}"     ng-repeat="code in attribute.codes">{{code.codeName}}</option>-->
                   </select>
               </label>
-              <!--
-              <ion-item class="item-remove-animate  item-icon-right" >
-                  <h2>我是分割线</h2>
-                  <i class="icon ion-chevron-right icon-accessory"></i>
-                  <ion-option-button class="button-assertive" ng-click="remove(chat)">
-                      Delete
-                  </ion-option-button>
-              </ion-item>
-              -->
+              <label class="item item-input item-stacked-label"  ng-if=" attribute.inputTypeId=='radio' ">
+                  <div class="input-label" ng-if="attribute.isViewName=='Y'" >
+                      {{attribute.attrName}}
+                  </div>
+                  <ion-list>
+                      <ion-radio  name="{{attribute.attrCode}}" ng-model="projData.serialDataForm[attribute.attrCode]" value="{{code.codeValue}}" ng-repeat="code in attribute.codes" >{{code.codeName}}</ion-radio>
+                  </ion-list>
+              </label>
+              <label class="item  item-stacked-label"  ng-if="  attribute.inputTypeId=='checkbox' ">
+                  <div class="input-label" ng-if="attribute.isViewName=='Y'">
+                      {{attribute.attrName}}
+                  </div>
+                  <ion-list>
+                      <ion-checkbox  name="{{attribute.attrCode}}" ng-model="code.selected" ng-click="getCheckboxVal(projData.inputs.serial.elementCode,attribute.attrCode,true);"    ng-repeat="code in attribute.codes" >{{code.codeName}}</ion-checkbox>
+                  </ion-list>
+              </label>
           </div>
       </div>
   </ion-content>

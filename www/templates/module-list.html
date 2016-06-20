@@ -1,15 +1,20 @@
 <ion-view view-title="{{projData.patient.patientName}}" cache-view="false">
   <ion-content>
 
-      <div class="card">
-          <div class="item item-text-wrap" ng-if="projData.visit">
+     <!-- <div class="card">
+          <div class="item item-text-wrap balanced" ng-if="projData.visit">
               {{projData.visit.visitName}}
           </div>
           <div class="item item-text-wrap" ng-if="!projData.visit">
              请选择访视!
           </div>
-      </div>
+      </div>-->
     <ion-list>
+      <ion-item class="item-remove-animate  item-icon-left" type="item-text-wrap">
+           <i class="icon ion-ios-information-outline"></i>
+          <div  ng-if="projData.visit" class="  item item-divider">  {{projData.visit.visitName}}</div>
+          <div  ng-if="!projData.visit" class=" item item-divider"> 请先选择访视!</div>
+      </ion-item>
       <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="module in projData.modules" type="item-text-wrap" ng-click="datainput(module.moduleCode);" >
         <img src="img/F6.png">
         <h2>{{module.moduleName}}</h2>
