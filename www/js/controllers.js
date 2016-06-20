@@ -84,7 +84,10 @@ angular.module('starter.controllers', [])
     $scope.$on('$ionicView.enter', function(e) {
 
         var delegate = $ionicScrollDelegate.$getByHandle('projScroll');
-        delegate.scrollTo($rootScope.projListPosition.left, $rootScope.projListPosition.top);
+        if($rootScope.projListPosition){
+            delegate.scrollTo($rootScope.projListPosition.left, $rootScope.projListPosition.top);
+        }
+
     });
 
 
@@ -373,9 +376,23 @@ angular.module('starter.controllers', [])
             });
     };
 
+    $scope.getCheckboxVal = function(eleCode,attrCode,isSerial){
+       console.error("eleCode="+eleCode);
+        console.error("attrCode="+attrCode);
+
+        var inputs = isSerial?$scope.projData.inputs.serial:$scope.projData.inputs;
+        console.error("attrCode="+PatientService.getCheckboxDatas(inputs,eleCode,attrCode,isSerial));
+        if(isSerial){
+            $scope.projData.serialDataForm[attrCode] = PatientService.getCheckboxDatas(inputs,eleCode,attrCode,isSerial);
+        }else {
+            $scope.projData.dataForm[attrCode] = PatientService.getCheckboxDatas(inputs,eleCode,attrCode,isSerial);
+        }
+
+
+    }   ;
     $scope.saveInputData = function() {
         $ionicLoading.show({
-            template: '保存中...'
+            template: '数据保存中...'
         });
         PatientService.saveData($scope.projData.dataForm)
             .success(function () {
@@ -385,10 +402,11 @@ angular.module('starter.controllers', [])
                 });
                 alertPopup.then(function (res) {
                     //用户点击确认登录后跳转
+                    $ionicLoading.hide();
                 });
                 $ionicLoading.hide();
-            }).error(function () {
-
+            }).error(function (error) {
+                $ionicLoading.hide();
             });
     };
     $scope.saveSerialInputData = function() {
@@ -418,7 +436,7 @@ angular.module('starter.controllers', [])
                 });
                 $ionicLoading.hide();
             }).error(function () {
-
+                $ionicLoading.hide();
             });
     };
     $scope.submitVisit = function(visitFlow) {
@@ -888,12 +906,16 @@ angular.module('starter.controllers', [])
             //$getByHandle('slideimgs');
     };
     $scope.closeModal = function() {
-        $scope.modal.hide();
+        if($scope.modal){
+            $scope.modal.hide();
+        }
     };
     //当我们用到模型时，清除它！
     $scope.$on('$destroy', function() {
         console.log("remove===========");
-        $scope.modal.remove();
+        if($scope.modal){
+            $scope.modal .remove();
+        }
     });
     // 当隐藏的模型时执行动作
     $scope.$on('modal.hide', function() {

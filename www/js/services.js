@@ -364,6 +364,48 @@ angular.module('starter.services', [])
             }
             return  datas;
         },
+        getCheckboxDatas:function(inputs,eleCode,attrCode,isSerial) {
+            var value = "";
+            if (!isSerial) {
+                var elements = inputs.elements;
+                for (var e = 0; e < elements.length; e++) {
+                    var element = inputs.elements[e];
+                    if (element.elementCode == eleCode) {
+                        for (var a = 0; a < element.attributes.length; a++) {
+                            var attr = element.attributes[a];
+                            if (attr.attrCode == attrCode) {
+                                for (var c = 0; c < attr.codes.length; c++) {
+                                    var code = attr.codes[c];
+                                    if (code.selected) {
+                                        if (value != "") {
+                                            value += ",";
+                                        }
+                                        value += code.codeValue;
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }else {
+                for (var a = 0; a < inputs.attributes.length; a++) {
+                    var attr = inputs.attributes[a];
+                    if (attr.attrCode == attrCode) {
+                        for (var c = 0; c < attr.codes.length; c++) {
+                            var code = attr.codes[c];
+                            if (code.selected) {
+                                if (value != "") {
+                                    value += ",";
+                                }
+                                value += code.codeValue;
+                            }
+                        }
+                    }
+                }
+            }
+            return  value;
+        },
         getDatasFromSerial:function(serial) {
             var datas  ={};
             for(var a = 0; a < serial.attributes.length; a++){
@@ -375,16 +417,23 @@ angular.module('starter.services', [])
         saveData:function(dataForm){
             var deferred = $q.defer();
             var promise = deferred.promise;
-
+            console.log("dataForm="+dataForm);
             $http({method: 'post', url: $rootScope.SERVICE_URL+"/saveData",
                 data: dataForm
+
                // headers: { 'Content-Type': 'application/json; charset=UTF-8'},
                // transformRequest: function transform(data){
                //     return data;
                // }
-            }) .success(function () {
-                deferred.resolve('save success!');
-            }).error(deferred.reject);
+            }).success(function (response) {
+                if(response.resultId==200){
+                    deferred.resolve('Success!');
+                }else {
+                    deferred.reject(response.resultName);
+                }
+            }).error(function (error) {
+                deferred.reject(error);
+            });
 
             promise.success = function (fn) {
                 promise.then(fn);

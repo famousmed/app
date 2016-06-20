@@ -29,7 +29,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
            signUrl:"http://localhost:63342/edc/www/index.html"
        }
   }
-  var compStr = "local";
+  var compStr = "pharmasun";
   $rootScope.SERVICE_URL = $rootScope.configData[compStr].SERVICE_URL;
   $rootScope.appid = $rootScope.configData[compStr].appid;
   $rootScope.signUrl =  $rootScope.configData[compStr].signUrl;
@@ -336,7 +336,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
         $cordovaToast.showShortBottom('登录信息失效，请重新登录');
         // 清除登录信息
         $rootScope.user = {};
-        GhostDB.removeUserInfo();
+       // GhostDB.removeUserInfo();
         // 弹出登录框
         if ($rootScope.blog.modal.login) {
             $rootScope.blog.modal.login.show();
@@ -372,7 +372,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
             }
             else {
                 // 统一处理，未做详细区别
-                clearAndShowLogin();
+                //clearAndShowLogin();
                 return $q.reject(response);
             }
         }
