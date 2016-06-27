@@ -185,6 +185,9 @@ angular.module('starter.controllers', [])
     $scope.newPatient = PatientService.newPatient();
 
     $scope.patient = function(projFlow,orgFlow){
+
+
+
         $ionicLoading.show({
             template: '加载中...'
         });
@@ -202,18 +205,42 @@ angular.module('starter.controllers', [])
 
         });
     };
-    $scope.addPatient= function() {
+    $scope.addPatient= function(projFlow) {
 
         /* var alertPopup = $ionicPopup.alert({
             title: '提示',
             template:  "权限不足，无法添加受试者!"
         });
         $state.go("commenu.patient-add");*/
-        $state.go("commenu.patient-random");
+
+        var randomTypeName = ProjService.getRandomType(projFlow);
+
+        if(randomTypeName=="非随机"){
+            $state.go("commenu.patient-add");
+        }else {
+            $state.go("commenu.patient-random");
+        }
+
     };
     $scope.savePatient = function() {
         $scope.newPatient.projFlow = $scope.projData.projFlow;
         $scope.newPatient.orgFlow = $scope.projData.orgFlow;
+        $scope.newPatient.userFlow = $rootScope.user.userFlow;
+
+        if($scope.newPatient.patientName == ""){
+            $ionicPopup.alert({
+                title: '提示',
+                template:  "姓名不能为空!"
+            });
+            return;
+        }
+        if($scope.newPatient.sexId == ""){
+            $ionicPopup.alert({
+                title: '提示',
+                template:  "性别不能为空!"
+            });
+            return;
+        }
 
         PatientService.savePatient($scope.newPatient).success(function () {
             var alertPopup = $ionicPopup.alert({
@@ -225,8 +252,11 @@ angular.module('starter.controllers', [])
                 PatientService.patientlist($scope.projData.projFlow,$scope.projData.orgFlow);
                 $state.go("projmenu.patient");
             });
-        }).error(function () {
-
+        }).error(function (resultName) {
+            $ionicPopup.alert({
+                title: '操作失败',
+                template:  resultName
+            });
         });
     };
 

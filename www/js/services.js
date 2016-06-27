@@ -83,6 +83,14 @@ angular.module('starter.services', [])
         all: function() {
             return projs;
         },
+        getRandomType:function(projFlow){
+            for (var i = 0; i < projs.length; i++) {
+                if (projs[i].projFlow === projFlow) {
+                    return projs[i].randomTypeName;
+                }
+            }
+            return null;
+        },
         getvisits: function() {
             return visits;
         },
@@ -186,7 +194,7 @@ angular.module('starter.services', [])
             }
             return null;
         },
-        patientlist:function(projFlow,orgFlow){
+        patientlist:function(projFlow,orgFlow,randomTypeName){
             var deferred = $q.defer();
             var promise = deferred.promise;
             //ajax请求
@@ -195,9 +203,11 @@ angular.module('starter.services', [])
                     projData.projFlow = projFlow;
                     projData.projName = response.projName;
                     projData.orgFlow = orgFlow;
+
                     projData.orgName = response.orgName;
                     projData.patients = response.patientList;
                     projData.orgs = ProjService.orgs(projFlow);
+
                     deferred.resolve('patient.length= ' + projData.patients.length + '!');
                 }).error(function (error) {
                     deferred.reject(error);
@@ -218,9 +228,17 @@ angular.module('starter.services', [])
             $http({method: 'post', url: $rootScope.SERVICE_URL+"/savePatient",
                 data: newPatient
             }) .success(function (response) {
-                newPatient={patientName:'',sexId:'',patientBirthday:''};
-                deferred.resolve('patient.length= ' + projData.patients.length + '!');
-            }).error(deferred.reject);
+
+                    if(response.resultId==200) {
+                        newPatient = {patientName: '', sexId: '', patientBirthday: ''};
+                        deferred.resolve('patient.length= ' + projData.patients.length + '!');
+                    }else {
+                        deferred.reject(response.resultName);
+                    }
+            }).error(function (error) {
+
+                deferred.reject(error);
+            });
 
             promise.success = function (fn) {
                 promise.then(fn);
@@ -240,7 +258,7 @@ angular.module('starter.services', [])
             $http({method: 'post', url: $rootScope.SERVICE_URL+"/assignPatient",
                 data: newPatient
             }).success(function (response) {
-                if(response.resultId=="200"){
+                if(response.resultId==200){
                     newPatient={patientName:'',sexId:'',patientBirthday:''};
                     deferred.resolve("success");
                 }else {

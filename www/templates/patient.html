@@ -30,8 +30,8 @@
         </label>
 
     </div>
-        <button class="button button-balanced button-full "  ng-click="addPatient();">
-            申请随机号
+        <button class="button button-balanced button-full "  ng-click="addPatient(projData.projFlow);">
+            受试者入组
         </button>
         <ion-list >
             <ion-item class="item-remove-animate item-avatar item-icon-right" ng-repeat="patient in projData.patients | filter:query| orderBy:order " type="item-text-wrap" ng-click="visitlist(patient.patientFlow)" >

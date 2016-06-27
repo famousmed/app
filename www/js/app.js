@@ -22,6 +22,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
             appid:"wx1315bff62e20057d",
             signUrl:"http://app.medroad.cn:80/app/#/tab/case"
         },
+      ctfh:{
+          sysTitle:"正大丰海",
+          SERVICE_URL:"http://120.55.165.176:8080/fhedc/mobile",
+          appid:"wx1315bff62e20057d",
+          signUrl:"http://120.55.165.176:8080/fhapp/#/tab/case"
+      },
        local:{
            sysTitle:"本地测试",
            SERVICE_URL: "http://localhost:8080/pdsci/mobile",
@@ -29,7 +35,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
            signUrl:"http://localhost:63342/edc/www/index.html"
        }
   }
-  var compStr = "pharmasun";
+  var compStr = "ctfh";
   $rootScope.SERVICE_URL = $rootScope.configData[compStr].SERVICE_URL;
   $rootScope.appid = $rootScope.configData[compStr].appid;
   $rootScope.signUrl =  $rootScope.configData[compStr].signUrl;
