@@ -1,0 +1,17 @@
+<ion-view view-title="随访列表" style="background: #f7f7f7;">
+    <ion-content >
+        <ion-list>
+            <ion-item class="item-remove-animate item-avatar item-icon-right"   ng-repeat="patient in followData.patients" type="item-text-wrap" ng-click="followDetail(patient.patientFlow)">
+                <img src="img/3.png">
+                <h2>{{patient.patientName}}</h2>
+                <p>{{patient.sexName}} &#12288;{{patient.age}}岁&#12288;入组日期:{{patient.inDate}}</p>
+                <i class="icon ion-chevron-right icon-accessory"></i>
+            </ion-item>
+            <ion-item class="item-remove-animate  item-icon-left" type="item-text-wrap"  ng-if="followData.patients==''">
+                <i class="icon ion-ios-information-outline"></i>
+                <h2>暂无受试者入组</h2>
+            </ion-item>
+        </ion-list>
+
+    </ion-content>
+</ion-view>
