@@ -1,0 +1,32 @@
+<ion-view view-title="{{followData.visitData.visitName}}" cache-view="false" style="background: #f7f7f7;">
+    <ion-content >
+        <div class="row responsive-sm" style="margin-top: 15px;">
+            <div class="item item-icon-left">
+                <i class="icon   ion-android-checkbox-outline"></i>
+                {{followData.visitData.visitName}}
+            </div>
+            <div class="item item-icon-left">
+                <i class="icon  ion-ios-clock-outline"></i>
+                <input type="date"  format-date ng-model="followData.visitData.visitDate" placeholder="" >
+
+            </div>
+        </div>
+
+        <div style="margin-top: 15px;" ng-if="followData.visitData.recipe.drugs!=''">&#12288;本次随访用药</div>
+        <div class="row responsive-sm" >
+                <ion-list>
+                     <ion-checkbox  name="{{drug.drugFlow}}" ng-model="drug.selected"  ng-repeat="drug in followData.visitData.recipe.drugs" >{{drug.drugName}}</ion-checkbox>
+                </ion-list>
+           </div>
+        <div class="row responsive-sm" style="margin-top: 15px;">
+            <div class="item ">
+                医嘱
+                <textarea placeholder="请填写医嘱" ng-model="followData.visitData.recipe.content" style="width: 100%">{{followData.visitData.recipe.content}}</textarea>
+                <!--<input type="text" ng-if="attribute.inputTypeId!='date'" name="{{attribute.attrCode}}" ng-model="projData.dataForm[attribute.attrCode]" placeholder="请填写..." >-->
+            </div>
+        </div>
+        <div class="row responsive-sm" style="margin-top: 15px;">
+        <button class="button button-block button-calm" ng-click="savePatientVisit();">保&#12288;存</button>
+        </div>
+    </ion-content>
+</ion-view>

@@ -16,6 +16,7 @@ angular.module('starter.controllers', [])
             }
         };
     })
+
 .controller('LoginCtrl', function($rootScope,$scope,$location, $ionicLoading,LoginService,$ionicPopup) {
     $rootScope.user = {userCode:localStorage.userCode,userPassword:localStorage.userPasswd};
     var weekDayLabels = new Array("星期日","星期一","星期二","星期三","星期四","星期五","星期六");
@@ -63,15 +64,11 @@ angular.module('starter.controllers', [])
     $scope.main = function(){
         $state.go("main");
     };
-    $scope.dailyWork = function(){
-        $location.path("/paper");
-    };
+
     $scope.exit = function(){
         $location.path("/logn");
     };
-    $scope.fllowRemaid = function(){
-        $location.path("/fllow");
-    };
+
     $scope.input = function(){
         $location.path("/input");
     };
@@ -333,7 +330,7 @@ angular.module('starter.controllers', [])
         $ionicLoading.show({
             template: '加载中...'
         });
-        ProjService.visits($scope.projData.projFlow,patientFlow,$rootScope.user.userFlow).success(function () {
+        ProjService.visits(patientFlow,$rootScope.user.userFlow).success(function () {
             $state.go("tab.proj-visit");
             $ionicLoading.hide();
         }).error(function () {
@@ -490,7 +487,7 @@ angular.module('starter.controllers', [])
                                 template: '提交成功!'
                             });
                             alertPopup.then(function (res) {
-                                ProjService.visits($scope.projData.projFlow, $scope.projData.patient.patientFlow, $rootScope.user.userFlow).success(function () {
+                                ProjService.visits($scope.projData.patient.patientFlow, $rootScope.user.userFlow).success(function () {
                                     $state.reload();
                                 }).error(function (resultName) {
                                     $ionicPopup.alert({
@@ -982,11 +979,64 @@ angular.module('starter.controllers', [])
     };
 })
 
-.controller('ChatDetailCtrl', function($scope, $stateParams, Chats) {
-  $scope.chat = Chats.get($stateParams.chatId);
-})
-.controller('PaperCtrl', function($scope, $stateParams) {
+.controller('FollowCtrl', function($scope, $stateParams,$location,$rootScope,FollowService,$state,$ionicLoading,ProjService,PatientService) {
+    $scope.followData = FollowService.getFollowData();
 
+    $scope.fllowRemaid = function(){
+        $ionicLoading.show({
+            template: '加载中...'
+        });
+        FollowService.followPatients().success(function () {
+            $state.go("follow-list");
+            $ionicLoading.hide();
+        }).error(function () {
+
+        });
+
+    };
+    $scope.followDetail = function(patientFlow) {
+
+        $ionicLoading.show({
+            template: '加载中...'
+        });
+        FollowService.detail(patientFlow).success(function () {
+            $state.go("follow-detail");
+            $ionicLoading.hide();
+        }).error(function () { });
+    };
+
+    $scope.editPatientVisit = function(visitFlow){
+        $scope.followData.visitData = FollowService.getVisitData(visitFlow);
+        $state.go("follow-edit");
+    };
+    $scope.savePatientVisit = function(){
+        FollowService.saveVisitData();
+        $state.go("follow-detail");
+    };
+
+
+
+
+})
+.controller('StatisCtrl', function($scope,$state,StatisService) {
+        $scope.chartData = StatisService.getCharData();
+
+
+       /* $scope.pieData = [
+            {value:335, name:'入组'},
+            {value:310, name:'完成'},
+            {value:310, name:'脱落'},
+            {value:310, name:'待入组'}
+        ];*/
+
+        $scope.legend = ['入组','完成','脱落','视频广告','未入组'];
+
+        $scope.statis = function(){
+
+            StatisService.statis();
+
+            $state.go("statis");
+        };
 })
 .controller('MenuCtrl', function($scope,$ionicSideMenuDelegate) {
     $scope.toggleLeft = function() {

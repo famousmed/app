@@ -1,0 +1,28 @@
+<ion-view view-title="随访管理" style="background: #f7f7f7;">
+    <ion-content >
+
+        <div class="row responsive-sm"  ng-repeat="visit in followData.detail.visits" style="margin-top: 15px;">
+            <div class=" item " style="padding: 10px 15px;" ng-click="editPatientVisit(visit.visitFlow)">
+                <i class="icon   ion-android-checkbox-outline"></i>
+                {{visit.visitName}}&#12288
+                <div style="float: right">{{visit.visitDate}}</div>
+                <div style="float: right;color: red" ng-if="visit.visitDate==''">未随访</div>
+            </div>
+            <div class="item range " style="white-space: normal" ng-if="visit.recipe.sendDrugFlag=='Y'">
+                &#12288;
+                <i class="icon  ion-ios-pricetag-outline"></i>
+                <div ng-repeat="drug in visit.recipe.drugs " ng-if="drug.selected">
+                    {{drug.drugName}}<br/>
+                </div>
+            </div>
+        </div>
+
+        <!--<div class="row responsive-sm" style="margin-top: 15px;">
+            <div class="item range" >
+                <i class="icon ion-volume-low"></i>
+                通知患者随访(2016-07-03 至 2016-07-12)
+            </div>
+            <div class="text-right assertive">向该患者发送一条系统短信通知</div>
+        </div>-->
+    </ion-content>
+</ion-view>

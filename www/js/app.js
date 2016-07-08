@@ -25,8 +25,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
       ctfh:{
           sysTitle:"正大丰海",
           SERVICE_URL:"http://120.55.165.176:8080/fhedc/mobile",
-          appid:"wx1315bff62e20057d",
-          signUrl:"http://120.55.165.176:8080/fhapp/#/tab/case"
+          appid:"wxf2b31a95e09781ed",
+          signUrl:"http://suqian.medroad.cn:8080/fhapp/"
       },
        local:{
            sysTitle:"本地测试",
@@ -35,7 +35,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
            signUrl:"http://localhost:63342/edc/www/index.html"
        }
   }
-  var compStr = "ctfh";
+  var compStr = "pharmasun";
   $rootScope.SERVICE_URL = $rootScope.configData[compStr].SERVICE_URL;
   $rootScope.appid = $rootScope.configData[compStr].appid;
   $rootScope.signUrl =  $rootScope.configData[compStr].signUrl;
@@ -234,16 +234,31 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
                 }
             }
         })
+        .state('statis', {
+            url: '/statis',
+            templateUrl: 'templates/statis.html',
+            controller: 'StatisCtrl'
+        })
     .state('paper', {
       url: '/paper',
       templateUrl: 'templates/paper.html',
       controller: 'PaperCtrl'
     })
-  .state('fllow', {
-      url: '/fllow',
-      templateUrl: 'templates/fllow.html',
-      controller: 'PatientCtrl'
+  .state('follow-list', {
+      url: '/follow-list',
+      templateUrl: 'templates/follow/follow-list.html',
+      controller: 'FollowCtrl'
   })
+    .state('follow-detail', {
+        url: '/follow-detail',
+        templateUrl: 'templates/follow/follow-detail.html',
+        controller: 'FollowCtrl'
+    })
+        .state('follow-edit', {
+            url: '/follow-edit',
+            templateUrl: 'templates/follow/follow-edit.html',
+            controller: 'FollowCtrl'
+        })
   .state('commenu', {
       url: '/commenu',
       abstract: true,
@@ -383,4 +398,194 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
             }
         }
     };
-});
+}).directive("bar", function() {
+        return {
+            restrict: 'AE',
+            scope: {
+                'id': '@',
+                'item': '=',
+                'data': '=',
+                'title': '=',
+                'subtitle': '='
+            },
+            replace: true,
+            template: '<div style="height:250px;" ></div>',
+            link: function($scope, element, attrs, controller){
+                option = {
+
+                    tooltip : {
+                        trigger: 'axis'
+                    },
+                    legend: {
+
+                        data:['总病例数','入组','完成','脱落/终止']
+                    },
+                    calculable : true,
+                    xAxis : [
+                        {
+                            type : 'category',
+                            data : [$scope.title]
+                        }
+                    ],
+
+                    yAxis : [
+                        {
+
+                            type : 'value'
+                        }
+                    ],
+                    series : [
+                        {
+                            name:'总病例数',
+                            type:'bar',
+                            data:[$scope.subtitle],
+                            color:[ '#3498db'],
+                            itemStyle: {
+                                normal: {
+                                    label : {
+                                        show: true, position: 'top'
+                                    }
+                                }
+                            }
+                        },
+                        {
+                            name:'入组',
+                            type:'bar',
+                            data:[$scope.data.inCount],
+                            color:[ '#62cb31'],
+                            itemStyle: {
+                                normal: {
+                                    label : {
+                                        show: true, position: 'top'
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        {
+                            name:'完成',
+                            type:'bar',
+                            data:[$scope.data.finishCount],
+                            color:[ '#9b59b6'],
+                            itemStyle: {
+                                normal: {
+                                    label : {
+                                        show: true, position: 'top'
+                                    }
+                                }
+                            }
+                        }
+                        ,
+                        {
+                            name:'脱落/终止',
+                            type:'bar',
+                            data:[$scope.data.offCount],
+                            color:[ '#e74c3c'],
+                            itemStyle: {
+                                normal: {
+                                    label : {
+                                        show: true, position: 'top'
+                                    }
+                                }
+                            }
+                        }
+                    ]
+                };
+
+                var div = document.getElementById($scope.id)
+
+                var chart = echarts.init(element[0])
+                chart.setOption(option)
+            }
+        }
+    }).directive("pie", function() {
+        return {
+            restrict: 'AE',
+            scope: {
+                'id': '@',
+                'item': '=',
+                'data': '=',
+                'title': '=',
+                'subtitle': '='
+            },
+            replace: true,
+            template: '<div style="height:250px;" ></div>',
+            link: function($scope, element, attrs, controller){
+                option = {
+                    title : {
+                        text: $scope.title ,
+                        x:'left'
+                    },
+                    tooltip : {
+                        show: true,
+                        trigger: 'item',
+                        formatter: "{a} <br/>{b} : {c} ({d}%)"
+                    },
+                    series : [
+                        {
+                            name: '病例录入状态',
+                            type: 'pie',
+                            radius : '60%',
+                            center: ['50%', '50%'],
+                            data: $scope.data,
+                            label: {
+                                normal: {
+                                    position: 'outside'
+                                }
+                            },
+                            color:[ '#62cb31','#3498db', '#c4ccd3'],
+                            itemStyle: {
+                                emphasis: {
+                                    shadowBlur: 10,
+                                    shadowOffsetX: 0,
+                                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                                }
+                            }
+                        }
+                    ]
+                };
+                var div = document.getElementById($scope.id)
+
+                var chart = echarts.init(element[0])
+                chart.setOption(option)
+            }
+        }
+    })
+    .directive("gauge", function() {
+        return {
+            restrict: 'AE',
+            scope: {
+                'id': '@',
+                'item': '=',
+                'data': '=',
+                'title': '=',
+                'subtitle': '='
+            },
+            replace: true,
+            template: '<div style="height:250px;"></div>',
+            link: function($scope, element, attrs, controller){
+                option = {
+                    title : {
+                        text: $scope.title ,
+                        x:'left'
+                    },
+                    tooltip : {
+                        formatter: "{a} <br/>{b} : {c}%"
+                    },
+                    series: [
+                        {
+                            name: '业务指标',
+                            type: 'gauge',
+                            radius : '85%',
+                            center: ['50%', '50%'],
+                            detail: {formatter:'{value}%'},
+                            data: [{value:$scope.data, name: ''}]
+                        }
+                    ]
+                };
+                var div = document.getElementById($scope.id)
+                var chart = echarts.init(element[0])
+                chart.setOption(option)
+            }
+        }
+    })

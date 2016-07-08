@@ -1,0 +1,19 @@
+<ion-view view-title="统计报表" style="background: #f7f7f7;">
+  <ion-content >
+
+      <div class="row responsive-sm"  ng-repeat="proj in chartData.projList" >
+          <div class="item " style="margin-top: 15px;">
+                {{proj.projShortName}}
+          </div>
+          <div class="item ">
+              <bar   id="{{proj.projFlow}}_bar" title="['研究进度']" subtitle="proj.sumCount"  data="proj.patientData"></bar>
+          </div>
+          <div class="item ">
+          <pie   id="{{proj.projFlow}}_pie" title="['病例进度[按访视]']"   data="proj.inputData"></pie>
+          </div>
+          <div class="item ">
+              <gauge id="{{proj.projFlow}}_gauge" title="['药物使用量']" data="proj.drugCount"></gauge>
+          </div>
+      </div>
+  </ion-content>
+</ion-view>

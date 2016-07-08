@@ -1,37 +1,4 @@
 angular.module('starter.services', [])
-.factory('Chats', function() {
-  // Might use a resource here that returns a JSON array
-
-  // Some fake testing data
-  var chats = [{
-    id: 0,
-    name: '张三',
-    lastText: '下次访视日期:2015-10-12',
-    face: 'https://pbs.twimg.com/profile_images/514549811765211136/9SgAuHeY.png'
-  }, {
-    id: 1,
-    name: '李四',
-    lastText: '下次访视日期:2015-10-18',
-    face: 'https://avatars3.githubusercontent.com/u/11214?v=3&s=460'
-  }];
-
-  return {
-    all: function() {
-      return chats;
-    },
-    remove: function(chat) {
-      chats.splice(chats.indexOf(chat), 1);
-    },
-    get: function(chatId) {
-      for (var i = 0; i < chats.length; i++) {
-        if (chats[i].id === parseInt(chatId)) {
-          return chats[i];
-        }
-      }
-      return null;
-    }
-  };
-})
 
 .factory('LoginService', function($q, $http,$rootScope) {
     return {
@@ -122,11 +89,11 @@ angular.module('starter.services', [])
             }
             return null;
         },
-        visits: function(projFlow,patientFlow,userFlow) {
+        visits: function(patientFlow,userFlow) {
             var deferred = $q.defer();
             var promise = deferred.promise;
             //ajax请求
-            $http.jsonp($rootScope.SERVICE_URL+"/visitList?projFlow="+projFlow+"&patientFlow="+patientFlow+"&userFlow="+userFlow+"&callback=JSON_CALLBACK")
+            $http.jsonp($rootScope.SERVICE_URL+"/visitList?patientFlow="+patientFlow+"&userFlow="+userFlow+"&callback=JSON_CALLBACK")
                 .success(function (response) {
                     visits = response.visitList;
                     deferred.resolve('Welcome ' + projs + '!');
@@ -175,7 +142,7 @@ angular.module('starter.services', [])
         }
     };
 })
-.factory('PatientService', function($q, $http,ProjService,$rootScope,$cacheFactory) {
+.factory('PatientService', function($q, $http,ProjService,$rootScope) {
     var newPatient={patientName:'',sexId:'',patientBirthday:''};
     var projData = {};
    // var projData ={};
@@ -695,6 +662,178 @@ angular.module('starter.services', [])
             return promise;
         }
     };
+})
+.factory('FollowService', function($q, $http,$rootScope){
+     var followData = {};
+    return {
+        getFollowData: function() {
+            return followData;
+        },
+        getVisitData: function(flow) {
+            for(var i=0;i<followData.detail.visits.length;i++){
+                var visit = followData.detail.visits[i];
+                if(visit.visitFlow == flow){
+                    return visit;
+                }
+            }
+        },
+        getDrugFlow :function(){
+            var drugFlows = "";
+            for(var i=0;i<followData.visitData.recipe.drugs.length;i++){
+                var drug = followData.visitData.recipe.drugs[i];
+                if(drug.selected == true){
+                    if(drugFlows != ""){
+                        drugFlows+=","
+                    }
+                    drugFlows += drug.drugFlow
+                }
+            }
+            return drugFlows;
+        },
+        followPatients:function(){
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            $http.jsonp($rootScope.SERVICE_URL+"/getFollowPatients?userFlow="+ $rootScope.user.userFlow+"&callback=JSON_CALLBACK")
+                .success(function (response) {
+                    if(response.resultId=='200'){
+                        followData.patients = response.patients;
+
+                        deferred.resolve("");
+                    }else {
+                        deferred.reject(response.resultName);
+                    }
+                }).error(function (error) {
+                    deferred.reject(error);
+                });
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+            return promise;
+        },
+        detail:function(pateintFlow){
+            followData.patientFlow = pateintFlow;
+
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            $http.jsonp($rootScope.SERVICE_URL+"/followDetail?patientFlow="+ pateintFlow+"&callback=JSON_CALLBACK")
+                .success(function (response) {
+                    if(response.resultId=='200'){
+                        followData.detail = response.detail;
+
+                        deferred.resolve("");
+                    }else {
+                        deferred.reject(response.resultName);
+                    }
+                }).error(function (error) {
+                    deferred.reject(error);
+                });
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+            return promise;
+        },
+        editPatientVisit:function(pateintFlow,visitFlow){
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+            $http.jsonp($rootScope.SERVICE_URL+"/editPatientVisit?patientFlow="+ pateintFlow+"&visitFlow="+visitFlow+"&callback=JSON_CALLBACK")
+                .success(function (response) {
+                    if(response.resultId=='200'){
+                        followData.detail = response.detail;
+
+                        deferred.resolve("");
+                    }else {
+                        deferred.reject(response.resultName);
+                    }
+                }).error(function (error) {
+                    deferred.reject(error);
+                });
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+            return promise;
+        },
+        saveVisitData:function(){
+            var dataForm = {
+                "patientFlow":followData.detail.patientFlow,
+                "visitFlow":followData.visitData.visitFlow,
+                "content":followData.visitData.recipe.content,
+                "visitDate":followData.visitData.visitDate,
+                "drugFlow":this.getDrugFlow()
+            }
+            if(dataForm.drugFlow != ""){
+                followData.visitData.recipe.sendDrugFlag = 'Y';
+            }else {
+                followData.visitData.recipe.sendDrugFlag = '';
+            }
+
+            var deferred = $q.defer();
+            var promise = deferred.promise;
+
+            $http({method: 'post', url: $rootScope.SERVICE_URL+"/saveVisitData",
+                data: dataForm
+            }) .success(function () {
+                deferred.resolve("success");
+            }).error(deferred.reject);
+
+            promise.success = function (fn) {
+                promise.then(fn);
+                return promise;
+            }
+            promise.error = function (fn) {
+                promise.then(null, fn);
+                return promise;
+            }
+            return promise;
+        }
+    }
+})
+.factory('StatisService', function($q, $http,$rootScope) {
+        var chartData = {};
+        return {
+            getCharData: function () {
+                return chartData;
+            },
+            statis: function () {
+                var deferred = $q.defer();
+                var promise = deferred.promise;
+                $http.jsonp($rootScope.SERVICE_URL+"/statis?userFlow="+ $rootScope.user.userFlow+"&callback=JSON_CALLBACK")
+                    .success(function (response) {
+                        if(response.resultId=='200'){
+                            chartData.projList = response.projList;
+
+                            deferred.resolve("");
+                        }else {
+                            deferred.reject(response.resultName);
+                        }
+                    }).error(function (error) {
+                        deferred.reject(error);
+                    });
+                promise.success = function (fn) {
+                    promise.then(fn);
+                    return promise;
+                }
+                promise.error = function (fn) {
+                    promise.then(null, fn);
+                    return promise;
+                }
+                return promise;
+            }
+        }
 })
 .factory('WeiXinService', function($q, $http,$rootScope) {
 
