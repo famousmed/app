@@ -221,13 +221,15 @@ angular.module('starter.controllers', [])
 
         var randomTypeName = ProjService.getRandomType(projFlow);
 
-
+        PatientService.emptyPatient();
 
         if(randomTypeName=="非随机"){
             $state.go("commenu.patient-add");
         }else {
 
             $scope.projData.factor = ProjService.getRandomFactor(projFlow);
+
+
 
             $state.go("commenu.patient-random");
         }

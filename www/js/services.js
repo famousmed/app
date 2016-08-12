@@ -161,6 +161,9 @@ angular.module('starter.services', [])
         newPatient:function(){
             return newPatient;
         },
+        emptyPatient:function(){
+            newPatient = {patientName: '', sexId: '', patientBirthday: '',factor:''};
+        },
         get:function(patientFlow){
             for (var i = 0; i < projData.patients.length; i++) {
                 if (projData.patients[i].patientFlow === patientFlow) {
@@ -205,7 +208,6 @@ angular.module('starter.services', [])
             }) .success(function (response) {
 
                     if(response.resultId==200) {
-                        newPatient = {patientName: '', sexId: '', patientBirthday: ''};
                         deferred.resolve('patient.length= ' + projData.patients.length + '!');
                     }else {
                         deferred.reject(response.resultName);
@@ -234,7 +236,7 @@ angular.module('starter.services', [])
                 data: newPatient
             }).success(function (response) {
                 if(response.resultId==200){
-                    newPatient={patientName:'',sexId:'',patientBirthday:'',factor:''};
+                    console.log("============="+response.callBack);
                     deferred.resolve(response.callBack);
                 }else {
                     deferred.reject(response.resultName);

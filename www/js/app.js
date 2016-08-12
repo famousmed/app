@@ -26,16 +26,22 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services','n
           sysTitle:"正大丰海",
           SERVICE_URL:"http://120.55.165.176:8080/fhedc/mobile",
           appid:"wxf2b31a95e09781ed",
-          signUrl:"http://suqian.medroad.cn:8080/fhapp/"
+          signUrl:"http://suqian.medroad.cn:80/fhapp/#/tab/case"
       },
        local:{
            sysTitle:"本地测试",
            SERVICE_URL: "http://localhost:8080/pdsci/mobile",
            appid:"wx1315bff62e20057d",
            signUrl:"http://localhost:63342/edc/www/index.html"
-       }
+       },
+      enso:{
+          sysTitle:"10万例艾迪真实世界研究",
+          SERVICE_URL: "http://enso.net.cn:80/edc/mobile",
+          appid:"wx1315bff62e20057d",
+          signUrl:"http://enso.net.cn:80/app/#/tab/case"
+      }
   }
-  var compStr = "pharmasun";
+  var compStr = "local";
   $rootScope.SERVICE_URL = $rootScope.configData[compStr].SERVICE_URL;
   $rootScope.appid = $rootScope.configData[compStr].appid;
   $rootScope.signUrl =  $rootScope.configData[compStr].signUrl;
