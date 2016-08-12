@@ -1,7 +1,12 @@
 <ion-view view-title="统计报表" style="background: #f7f7f7;">
   <ion-content >
-
-      <div class="row responsive-sm"  ng-repeat="proj in chartData.projList" >
+      <div class="list list-inset">
+          <label class="item item-input">
+              <i class="icon ion-search placeholder-icon"></i>
+              <input type="text" ng-model="searchquery" placeholder="项目名称检索...">
+          </label>
+      </div>
+      <div class="row responsive-sm"  ng-repeat="proj in chartData.projList | filter:searchquery" >
           <div class="item " style="margin-top: 15px;">
                 {{proj.projShortName}}
           </div>
