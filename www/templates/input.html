@@ -1,17 +1,13 @@
 <ion-view view-title="{{projData.module.moduleName}}" cache-view="false">
   <ion-content class="padding">
-      <div ng-repeat="element in projData.inputs.elements">
-          <a class="item item-icon-left calm" href="javascript:void(0);">
-              <i class="icon ion-ios-paper"></i>
-             {{element.elementName}}
-          </a>
-          <div class="list" ng-if="element.elementSerial=='N'">
-              <div ng-repeat="attribute in element.attributes">
-                  <label class="item item-input item-stacked-label" ng-if="attribute.inputTypeId=='text' || attribute.inputTypeId=='date'">
-                      <span  class="input-label" ng-if="attribute.isViewName=='Y'">{{attribute.attrName}}</span>
-                      <input type="text" ng-if="attribute.inputTypeId!='date'" name="{{attribute.attrCode}}" ng-model="projData.dataForm[attribute.attrCode]" placeholder="请填写..." >
-
-                      <input type="date" ng-if="attribute.inputTypeId=='date'" name="{{attribute.attrCode}}" format-date ng-model="projData.dataForm[attribute.attrCode]" placeholder="请填写..." >
+      <div ng-repeat="element in projData.inputs.elements"  class="list list-inset">
+          <div  style="font-size: 16px;font-weight:bold;margin-bottom: 10px;">{{element.elementName}}<hr style="border-top: 1px ;" /></div>
+          <div ng-if="element.elementSerial=='N'">
+              <div ng-repeat="attribute in element.attributes" style="margin-bottom: 15px;">
+                 <span   ng-if="attribute.isViewName=='Y'">{{attribute.attrName}}</span>
+                  <label class="item item-input " ng-if="attribute.inputTypeId=='text' || attribute.inputTypeId=='date'">
+                      <input type="text" ng-if="attribute.inputTypeId!='date'" name="{{attribute.attrCode}}" ng-model="projData.dataForm[attribute.attrCode]" placeholder="{{attribute.attrName}}" >
+                      <input type="date" ng-if="attribute.inputTypeId=='date'" name="{{attribute.attrCode}}" format-date ng-model="projData.dataForm[attribute.attrCode]" placeholder="{{attribute.attrName}}" >
                       <!--
                         <ionic-datepicker input-obj="datepickerObject">
                           <input type="text" ng-if="attribute.inputTypeId=='date'" name="{{attribute.attrCode}}" value="{{datepickerObject.inputDate | date:'yyyy-MM-dd'}}" ng-model="projData.dataForm[attribute.attrCode]"  placeholder="请选择..." >
@@ -19,41 +15,23 @@
                         -->
                   </label>
                   <label class="item item-input item-select"  ng-if=" attribute.inputTypeId=='select'">
-                      <!--ng-if="attribute.isViewName=='Y'" -->
-                      <div class="input-label" >
-                          {{attribute.attrName}}
-                      </div>
                       <select name="{{attribute.attrCode}}" ng-model="projData.dataForm[attribute.attrCode]" ng-options="t.codeValue as t.codeName for t in attribute.codes">
                           <!-- <option value="{{code.codeValue}}"     ng-repeat="code in attribute.codes">{{code.codeName}}</option>-->
                     </select>
 
                   </label>
-                  <label class="item item-input item-stacked-label"  ng-if=" attribute.inputTypeId=='radio' ">
-
-                      <div class="input-label" ng-if="attribute.isViewName=='Y'" >
-                          {{attribute.attrName}}
-                      </div>
+                  <label   ng-if=" attribute.inputTypeId=='radio' ">
+                     <!-- <span   ng-if="attribute.isViewName=='Y'">{{attribute.attrName}}</span>-->
                       <ion-list>
                           <ion-radio  name="{{attribute.attrCode}}" ng-model="projData.dataForm[attribute.attrCode]" value="{{code.codeValue}}" ng-repeat="code in attribute.codes" >{{code.codeName}}</ion-radio>
                       </ion-list>
                   </label>
-                  <label class="item  item-stacked-label"  ng-if="  attribute.inputTypeId=='checkbox' ">
-                      <div class="input-label" ng-if="attribute.isViewName=='Y'">
-                          {{attribute.attrName}}
-                      </div>
+                  <label   ng-if="  attribute.inputTypeId=='checkbox' ">
+                    <!--  <span   ng-if="attribute.isViewName=='Y'">{{attribute.attrName}}</span>-->
                       <ion-list>
                           <ion-checkbox  name="{{attribute.attrCode}}" ng-model="code.selected" ng-click="getCheckboxVal(element.elementCode,attribute.attrCode,false);"    ng-repeat="code in attribute.codes" >{{code.codeName}}</ion-checkbox>
                       </ion-list>
                   </label>
-                  <!--
-                  <ion-item class="item-remove-animate  item-icon-right" >
-                      <h2>我是分割线</h2>
-                      <i class="icon ion-chevron-right icon-accessory"></i>
-                      <ion-option-button class="button-assertive" ng-click="remove(chat)">
-                          Delete
-                      </ion-option-button>
-                  </ion-item>
-                  -->
               </div>
           </div>
           <ion-list ng-if="element.elementSerial=='Y'">

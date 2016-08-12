@@ -29,13 +29,19 @@
               </div>
               <i class="radio-icon ion-checkmark"></i>
           </label>
-      </div>
-
-      <ul class="list">
           <label class="item item-input">
               <input type="text" placeholder="出生日期 格式如:20150921" required ng-model="newPatient.patientBirthday">
           </label>
-      </ul>
+      </div>
+
+      <div class="list list-inset" ng-if=" projData.factor !='' ">
+          <div class="item item-divider">
+              预后因素
+          </div>
+          <ion-list ng-repeat="layer in projData.factor">
+              <ion-radio name="factor_{{layer.layer}}"  ng-model="newPatient.factor" value="{{item.code}}" ng-repeat="item in layer.items" >{{item.name}}</ion-radio>
+          </ion-list>
+      </div>
       <button class="button button-balanced button-full " ng-controller="PatientCtrl"  ng-click="assignPatient();">
         保&#12288;存
       </button>
