@@ -188,6 +188,15 @@ angular.module('starter.controllers', [])
         $ionicLoading.show({
             template: '加载中...'
         });
+        var randomTypeName = ProjService.getRandomType(projFlow);
+
+
+        $scope.projData.patientBtnName = "申请随机号";
+        if(randomTypeName=="非随机"){
+            $scope.projData.patientBtnName = "受试者入组";
+        }
+
+
         PatientService.patientlist(projFlow,orgFlow).success(function () {
             $state.go("projmenu.patient");
 
@@ -212,9 +221,14 @@ angular.module('starter.controllers', [])
 
         var randomTypeName = ProjService.getRandomType(projFlow);
 
+
+
         if(randomTypeName=="非随机"){
             $state.go("commenu.patient-add");
         }else {
+
+            $scope.projData.factor = ProjService.getRandomFactor(projFlow);
+
             $state.go("commenu.patient-random");
         }
 
@@ -286,17 +300,25 @@ angular.module('starter.controllers', [])
             });
             return;
         }
-
+        console.log($scope.projData.factor);
+        console.log($scope.newPatient.factor);
+        if($scope.newPatient.factor == "" && $scope.projData.factor !=''){
+            $ionicPopup.alert({
+                title: '提示',
+                template:  "预后因素不能为空!"
+            });
+            return;
+        }
         var confirmPopup = $ionicPopup.confirm({
             title: '提示信息',
             template: '确认申请？'
         });
         confirmPopup.then(function (res){
             if(res){
-                PatientService.assignPatient($scope.newPatient).success(function () {
+                PatientService.assignPatient($scope.newPatient).success(function (callback) {
                     var alertPopup = $ionicPopup.alert({
                         title: '提示信息',
-                        template: '申请成功!'
+                        template:callback
                     });
                     alertPopup.then(function (res) {
                         //用户点击确认登录后跳转

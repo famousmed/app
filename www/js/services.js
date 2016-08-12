@@ -58,6 +58,14 @@ angular.module('starter.services', [])
             }
             return null;
         },
+        getRandomFactor:function(projFlow){
+            for (var i = 0; i < projs.length; i++) {
+                if (projs[i].projFlow === projFlow) {
+                    return projs[i].factors;
+                }
+            }
+            return null;
+        },
         getvisits: function() {
             return visits;
         },
@@ -143,7 +151,7 @@ angular.module('starter.services', [])
     };
 })
 .factory('PatientService', function($q, $http,ProjService,$rootScope) {
-    var newPatient={patientName:'',sexId:'',patientBirthday:''};
+    var newPatient={patientName:'',sexId:'',patientBirthday:'',factor:''};
     var projData = {};
    // var projData ={};
     return {
@@ -226,8 +234,8 @@ angular.module('starter.services', [])
                 data: newPatient
             }).success(function (response) {
                 if(response.resultId==200){
-                    newPatient={patientName:'',sexId:'',patientBirthday:''};
-                    deferred.resolve("success");
+                    newPatient={patientName:'',sexId:'',patientBirthday:'',factor:''};
+                    deferred.resolve(response.callBack);
                 }else {
                     deferred.reject(response.resultName);
                 }
